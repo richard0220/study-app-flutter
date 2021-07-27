@@ -18,9 +18,31 @@ class DatabaseService {
     });
   }
 
+  // Send friend req
   Future addFriend(String friendId) async {
     return await userData.doc(uid).update({
       'friendRequest': FieldValue.arrayUnion(<String>[friendId]),
+    });
+  }
+
+  // User accept req
+  Future acceptRequest(String id) async {
+    return await userData.doc(uid).update({
+      'friend': FieldValue.arrayUnion(<String>[id]),
+    });
+  }
+
+  // sender got accept
+  Future acceptComplete(String id) async {
+    return await userData.doc(id).update({
+      'friend': FieldValue.arrayUnion(<String>[uid]),
+    });
+  }
+
+  // Delete the send message
+  Future addComplete(String id) async {
+    return await userData.doc(uid).update({
+      'friendRequest': FieldValue.arrayRemove(<String>[id]),
     });
   }
 }

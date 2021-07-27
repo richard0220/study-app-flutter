@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_1/firestore/database.dart';
 
 class RequestNotification extends StatefulWidget {
   final String uid;
@@ -50,7 +51,14 @@ class _RequestNotificationState extends State<RequestNotification> {
                             title: Text(data['name'].toString()),
                             trailing: TextButton(
                               child: Text('accept'),
-                              onPressed: null,
+                              onPressed: () async {
+                                DatabaseService(uid: widget.uid)
+                                    .acceptRequest(data['uid'].toString());
+                                DatabaseService(uid: widget.uid)
+                                    .acceptComplete(data['uid'].toString());
+                                DatabaseService(uid: widget.uid)
+                                    .addComplete(data['uid'].toString());
+                              },
                             ),
                           ),
                           value: null,

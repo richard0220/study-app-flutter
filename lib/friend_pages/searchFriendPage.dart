@@ -83,7 +83,7 @@ class _FriendPageState extends State<FriendPage> {
         transition: CircularFloatingSearchBarTransition(),
         physics: BouncingScrollPhysics(),
         title: Text(
-          selectedTerm ?? 'The Search App',
+          selectedTerm ?? 'Find your friend!',
           style: Theme.of(context).textTheme.headline6,
         ),
         hint: 'Search and find out...',
