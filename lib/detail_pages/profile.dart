@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_1/firestore/imageSaving.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:image_picker/image_picker.dart';
@@ -72,6 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (croppedFile != null) {
         setState(() {
           imagePath = croppedFile.path;
+          ImageServer().saveImage(croppedFile);
         });
       }
     }
@@ -101,6 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (croppedFile != null) {
         setState(() {
           imagePath = croppedFile.path;
+          ImageServer().saveImage(croppedFile);
         });
       }
     }
@@ -125,15 +128,17 @@ class _ProfilePageState extends State<ProfilePage> {
             CircleAvatar(
               radius: 80,
               backgroundColor: Colors.white.withOpacity(0.5),
-              child: imagePath != ''
-                  ? Image.file(File(imagePath))
-                  : IconButton(
-                      iconSize: 50,
-                      icon: Icon(
-                        Icons.add_a_photo,
+              child: ClipOval(
+                child: imagePath != ''
+                    ? Image.file(File(imagePath))
+                    : IconButton(
+                        iconSize: 50,
+                        icon: Icon(
+                          Icons.add_a_photo,
+                        ),
+                        onPressed: _showDialog,
                       ),
-                      onPressed: _showDialog,
-                    ),
+              ),
             ),
             ListTile(
               title: Text(
