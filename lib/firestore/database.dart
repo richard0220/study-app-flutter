@@ -15,6 +15,7 @@ class DatabaseService {
       'email': email,
       'friend': <String>[],
       'friendRequest': <String>[],
+      'image': '',
     });
   }
 

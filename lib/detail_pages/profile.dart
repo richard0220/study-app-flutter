@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_1/firestore/imageSaving.dart';
 import 'dart:io';
@@ -6,9 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String name;
-  final String email;
-  ProfilePage({required this.name, required this.email});
+  final String uid;
+  ProfilePage({required this.uid});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (croppedFile != null) {
         setState(() {
           imagePath = croppedFile.path;
-          ImageServer().saveImage(croppedFile);
+          ImageServer(uid: widget.uid).saveImage(croppedFile);
         });
       }
     }
@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (croppedFile != null) {
         setState(() {
           imagePath = croppedFile.path;
-          ImageServer().saveImage(croppedFile);
+          ImageServer(uid: widget.uid).saveImage(croppedFile);
         });
       }
     }
@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.brown,
+          color: Colors.brown[200],
         ),
         child: Column(
           children: [
@@ -140,32 +140,44 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
               ),
             ),
-            ListTile(
-              title: Text(
-                'Name: ${widget.name}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: null,
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'E-mail: ${widget.email}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: null,
-              ),
-            )
+            StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('student')
+                    .doc(widget.uid)
+                    .snapshots(),
+                builder: (BuildContext context, snapshot) {
+                  DocumentSnapshot? documentSnapshot = snapshot.data;
+                  return Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                          'Name: ${documentSnapshot!['name']}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: null,
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          'E-mail: ${documentSnapshot['email']}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: null,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
           ],
         ),
       ),

@@ -77,8 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute<void>(
                           builder: (context) => ProfilePage(
-                            name: name,
-                            email: email,
+                            uid: widget.uid,
                           ),
                         ),
                       );
