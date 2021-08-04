@@ -11,24 +11,32 @@ class MyStudyRoom extends StatefulWidget {
 }
 
 class _MyStudyRoomState extends State<MyStudyRoom> {
-  var period = const Duration(seconds: 1);
+  Duration duration = Duration(minutes: 45);
   bool timeRun = false;
-  int timeCount = 2700;
-  int restMin = 45;
-  int restSecond = 0;
+  int hour = 0;
+  int minute = 0;
 
   void timeButtonEvent() {
     timeRun = !(timeRun);
-    Timer.periodic(period, (timer) {
-      if (timeCount < 1 || timeRun == false) {
+    Timer.periodic(Duration(minutes: 1), (timer) {
+      if ((hour < 1 && minute < 1) || timeRun == false) {
         timer.cancel();
       } else {
-        timeCount--;
-        restMin = timeCount ~/ 60;
-        restSecond = timeCount % 60;
+        if (minute == 0) {
+          hour -= 1;
+          minute = 59;
+        } else {
+          minute -= 1;
+        }
       }
       setState(() {});
     });
+  }
+
+  void formatDuration(Duration duration) {
+    hour = duration.inHours;
+    minute = duration.inMinutes.remainder(60);
+    setState(() {});
   }
 
   @override
@@ -53,7 +61,7 @@ class _MyStudyRoomState extends State<MyStudyRoom> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
             child: Text(
-              'StudyTime $restMin : $restSecond',
+              'StudyTime  $hour : $minute',
               style: TextStyle(
                 fontSize: 28,
                 color: Colors.brown[800],
@@ -71,8 +79,30 @@ class _MyStudyRoomState extends State<MyStudyRoom> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 160,
+          ),
+          buildTimePicker(),
+          SizedBox(height: 24),
+          selectTime(),
         ]),
       ),
     );
   }
+
+  Widget buildTimePicker() => SizedBox(
+        height: 180,
+        child: CupertinoTimerPicker(
+          initialTimerDuration: duration,
+          mode: CupertinoTimerPickerMode.hm,
+          minuteInterval: 15,
+          onTimerDurationChanged: (duration) =>
+              setState(() => this.duration = duration),
+        ),
+      );
+
+  Widget selectTime() => ElevatedButton(
+        onPressed: () => formatDuration(duration),
+        child: Text('Select'),
+      );
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_1/detail_pages/settingPage.dart';
 import 'package:flutter_1/friend_pages/searchFriendPage.dart';
 import 'package:flutter_1/detail_pages/myStudyRoom.dart';
 import 'package:flutter_1/detail_pages/profile.dart';
@@ -102,7 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ListTile(
                     leading: Icon(Icons.settings),
                     title: Text('Settings'),
-                    onTap: null,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                              builder: (context) => SettingPage()));
+                    },
                   )
                 ],
               );

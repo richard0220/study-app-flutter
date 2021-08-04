@@ -17,12 +17,10 @@ class ImageServer {
 
   Future<String> uploadFile(File image) async {
     Reference reference =
-        FirebaseStorage.instance.ref().child('sighting/${image.path}');
+        FirebaseStorage.instance.ref('sighting/${image.path}');
     UploadTask uploadTask = reference.putFile(image);
-    late String returnURL;
-    await reference.getDownloadURL().then((fileURL) {
-      returnURL = fileURL;
-    });
+    String returnURL = await reference.getDownloadURL();
+    print(returnURL);
     return returnURL;
   }
 }

@@ -148,12 +148,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 builder: (BuildContext context, snapshot) {
                   DocumentSnapshot? documentSnapshot = snapshot.data;
                   return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
                         title: Text(
                           'Name: ${documentSnapshot!['name']}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.brown,
                             fontSize: 20,
                           ),
                         ),
@@ -166,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         title: Text(
                           'E-mail: ${documentSnapshot['email']}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.brown,
                             fontSize: 20,
                           ),
                         ),

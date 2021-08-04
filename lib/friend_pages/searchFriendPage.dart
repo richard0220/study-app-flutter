@@ -225,27 +225,42 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
             return Text('Loading...');
           }
           return ListView(
-            padding: EdgeInsets.only(top: fsb.height + fsb.margins.vertical),
+            padding: EdgeInsets.only(top: 100),
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
+              List friendList = data['friend'] as List;
               return ListTile(
                 title: Text(data['name'].toString()),
                 subtitle: Text(data['email'].toString()),
-                trailing: ElevatedButton(
-                  child: Text('add friend'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        sendRequest ? Colors.grey : Colors.brown),
-                  ),
-                  onPressed: () async {
-                    await DatabaseService(uid: data['uid'].toString())
-                        .addFriend(widget.uid);
-                    setState(() {
-                      sendRequest = true;
-                    });
-                  },
-                ),
+                trailing: friendList.contains(widget.uid)
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: Colors.brown,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'friend',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : ElevatedButton(
+                        child: Text('add friend'),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              sendRequest ? Colors.grey : Colors.brown),
+                        ),
+                        onPressed: () async {
+                          await DatabaseService(uid: data['uid'].toString())
+                              .addFriend(widget.uid);
+                          setState(() {
+                            sendRequest = true;
+                          });
+                        },
+                      ),
               );
             }).toList(),
           );

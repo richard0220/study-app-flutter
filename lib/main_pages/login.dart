@@ -202,8 +202,15 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            TextButton(
+              child: Text('Forgot password?'),
+              onPressed: () {
+                FirebaseAuth.instance
+                    .sendPasswordResetEmail(email: emailController.text);
+              },
+            ),
             SizedBox(
-              height: 80,
+              height: 60,
             ),
             ListTile(
               title: Text(
